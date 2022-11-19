@@ -38,6 +38,8 @@ export default class OTPInputView extends Component<InputProps, OTPInputViewStat
     UNSAFE_componentWillReceiveProps(nextProps: InputProps) {
         const { code } = this.props
         if (nextProps.code !== code) {
+            let arr = codeToArray(nextProps.code)
+            this.focusField(Math.min(arr.length,this.fields.length-1))
             this.setState({ digits: codeToArray(nextProps.code) })
         }
     }
