@@ -161,7 +161,8 @@ export default class OTPInputView extends Component<InputProps, OTPInputViewStat
 
     focusField = (index: number) => {
         if (index < this.fields.length) {
-            (this.fields[index] as TextInput).focus();
+            setTimeout(()=>(this.fields[index] as TextInput).focus(),Platform.OS=='android'?125:undefined);
+            // (this.fields[index] as TextInput).focus();
             this.setState({
                 selectedIndex: index
             })
