@@ -41,11 +41,14 @@ export default class OTPInputView extends Component<InputProps, OTPInputViewStat
             let arr = codeToArray(nextProps.code)
             this.focusField(Math.min(arr.length,this.fields.length-1))
             this.setState({ digits: codeToArray(nextProps.code) })
+            if(arr.length==this.fields.length){
+                setTimeout(()=>this.blurAllFields(),Platform.OS=='android'?75:undefined);
+            }
         }
     }
 
     componentDidMount() {
-        this.copyCodeFromClipBoardOnAndroid()
+        // this.copyCodeFromClipBoardOnAndroid()
         this.bringUpKeyBoardIfNeeded()
         this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this.handleKeyboardDidHide)
     }
@@ -57,19 +60,19 @@ export default class OTPInputView extends Component<InputProps, OTPInputViewStat
         this.keyboardDidHideListener?.remove()
     }
 
-    private copyCodeFromClipBoardOnAndroid = () => {
-        if (Platform.OS === "android") {
-            this.checkPinCodeFromClipBoard()
-            this.timer = setInterval(this.checkPinCodeFromClipBoard, 400)
-        }
-    }
+    // private copyCodeFromClipBoardOnAndroid = () => {
+    //     if (Platform.OS === "android") {
+    //         this.checkPinCodeFromClipBoard()
+    //         this.timer = setInterval(this.checkPinCodeFromClipBoard, 400)
+    //     }
+    // }
 
     bringUpKeyBoardIfNeeded = () => {
         const { autoFocusOnLoad, pinCount } = this.props
         const digits = this.getDigits()
         const focusIndex = digits.length ? digits.length - 1 : 0
         if (focusIndex < pinCount && autoFocusOnLoad) {
-            this.focusField(focusIndex)
+            setTimeout(()=>this.focusField(focusIndex),Platform.OS=='android'?150:undefined);
         }
     }
 
@@ -141,7 +144,7 @@ export default class OTPInputView extends Component<InputProps, OTPInputViewStat
         if (result.length >= pinCount) {
             onCodeFilled && onCodeFilled(result)
             this.focusField(pinCount - 1)
-            this.blurAllFields()
+            setTimeout(()=>this.blurAllFields(),Platform.OS=='android'?75:undefined);
         } else {
             if (text.length > 0 && index < pinCount - 1) {
                 this.focusField(index + 1)
@@ -161,8 +164,7 @@ export default class OTPInputView extends Component<InputProps, OTPInputViewStat
 
     focusField = (index: number) => {
         if (index < this.fields.length) {
-            setTimeout(()=>(this.fields[index] as TextInput).focus(),Platform.OS=='android'?200:undefined);
-            // (this.fields[index] as TextInput).focus();
+            (this.fields[index] as TextInput).focus();
             this.setState({
                 selectedIndex: index
             })
