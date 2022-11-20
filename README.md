@@ -37,7 +37,7 @@ or
 ## Basic Usage
 
 ```js
-import OTPInputView from '@twotalltotems/react-native-otp-input'
+import OTPInputView from 'saymee-react-native-otp-input';
 
 ...
 
@@ -48,7 +48,7 @@ import OTPInputView from '@twotalltotems/react-native-otp-input'
 ## More Advanced Usage
 
 ```js
-import OTPInputView from '@twotalltotems/react-native-otp-input'
+import OTPInputView from 'saymee-react-native-otp-input';
 
 ...
 
